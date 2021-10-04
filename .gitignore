@@ -1,0 +1,37 @@
+.metadata
+dependency-reduced-pom.xml
+logs
+/data
+
+# Eclipse
+.classpath
+.project
+.settings/
+.recommenders/
+.factorypath
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+**/.DS_Store
+
+# VisualStudioCode artifacts
+.vscode/
+
+# Maven
+log/
+target/
+
+# Perf tools
+*.hgrm
+
+# tmp files
+*.pid
+
+# CI generated files
+.repository
+docker.debug-info
+
