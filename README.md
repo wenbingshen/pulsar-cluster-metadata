@@ -1,15 +1,15 @@
-# pulsar-cluster-metadata
+# Pulsar-Cluster-Metadata
 Collect metadata of multiple pulsar clusters
 
-# mvn build
+# Build
 
 mvn clean install
 
 
-# execute
+# Execute
 java -jar pulsar-tools-1.0-SNAPSHOT.jar configFilePath
 
-# example config file
+# Example Config File
 cluster=pulsar_test_cluster_1
 pulsar_test_cluster_1.serviceUrl=http://localhost:8080/
 pulsar_test_cluster_1.authPlugin=org.apache.pulsar.client.impl.auth.AuthenticationToken
