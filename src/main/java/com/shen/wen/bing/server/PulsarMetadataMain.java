@@ -42,7 +42,14 @@ public class PulsarMetadataMain {
                 .name("pulsar-tasks-executor")
                 .build();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(metadata::clear));
+        Runtime.getRuntime().addShutdownHook(new Thread(()-> {
+            if (!pulsarTasksExecutor.isShutdown()) {
+                pulsarTasksExecutor.shutdown();
+                log.info("pulsarTasksExecutor shutdown now.");
+            }
+            metadata.clear();
+            log.info("pulsar metadata cleared.");
+        }));
 
         String tasksCheckInterval = pulsarConfig.getProperty("pulsar.tasks.check.interval.ms", "15000");
 
