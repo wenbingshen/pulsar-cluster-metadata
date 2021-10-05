@@ -1,11 +1,10 @@
 package com.shen.wen.bing.task;
 
 import com.shen.wen.bing.common.Metadata;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.apache.pulsar.client.admin.PulsarAdminException;
-
-import java.util.List;
 
 @Slf4j
 public class BrokersTask implements PulsarTask{
@@ -27,7 +26,6 @@ public class BrokersTask implements PulsarTask{
                 List<String> activeBrokers = admin.brokers().getActiveBrokers(cluster);
                 metadata.setBrokers(cluster, activeBrokers);
                 log.info("Metadata cluster {}, brokers {}", cluster, metadata.getBrokers(cluster));
-                System.out.println("Metadata cluster " + cluster + ", broker " + metadata.getBrokers(cluster));
             } catch (PulsarAdminException e) {
                 log.error("Get active brokers for cluster {} failed", cluster, e);
             }

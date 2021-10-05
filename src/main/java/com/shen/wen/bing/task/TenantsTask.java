@@ -1,11 +1,10 @@
 package com.shen.wen.bing.task;
 
 import com.shen.wen.bing.common.Metadata;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pulsar.client.admin.PulsarAdmin;
 import org.apache.pulsar.client.admin.PulsarAdminException;
-
-import java.util.List;
 
 @Slf4j
 public class TenantsTask implements PulsarTask{
@@ -29,7 +28,6 @@ public class TenantsTask implements PulsarTask{
                 List<String> tenants = admin.tenants().getTenants();
                 metadata.setTenants(cluster, tenants);
                 log.info("Metadata cluster {}, tenants {}", cluster, tenants);
-                System.out.println("Metadata cluster " + cluster + ", tenants " + tenants);
             } catch (PulsarAdminException e) {
                 log.error("Get tenants for cluster {} failed", cluster, e);
             }

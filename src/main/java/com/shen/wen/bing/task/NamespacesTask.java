@@ -31,7 +31,6 @@ public class NamespacesTask implements PulsarTask {
                     List<String> namespaces = admin.namespaces().getNamespaces(tenant);
                     allNamespaces.addAll(namespaces);
                     log.info("Metadata cluster {}, tenant {}, namespaces {}", cluster, tenant, namespaces);
-                    System.out.println("Metadata cluster " + cluster + ", tenant " + tenant + ", namespace " + namespaces);
                 } catch (PulsarAdminException e) {
                     log.error("Get namespaces for cluster {} tenant {} failed", cluster, tenant, e);
                 }
