@@ -1,6 +1,7 @@
 package com.shen.wen.bing.server;
 
 import com.shen.wen.bing.common.PulsarAdminConfig;
+import com.shen.wen.bing.task.BookiesTask;
 import com.shen.wen.bing.task.BrokersTask;
 import com.shen.wen.bing.task.PulsarTask;
 import com.shen.wen.bing.utils.PulsarAdminBuilderUtil;
@@ -32,6 +33,12 @@ public class PulsarTaskBuilder {
                     .build().toProperties();
 
             PulsarAdmin admin = PulsarAdminBuilderUtil.build(pulsarAdminConfig);
+
+            boolean bookiesEnable = Boolean.parseBoolean(
+                    pulsarConfig.getProperty(cluster + ".bookiesTask.enable", "false"));
+            if (bookiesEnable) {
+                taskLists.add(new BookiesTask(admin, cluster, metadata));
+            }
 
             boolean brokersEnable = Boolean.parseBoolean(
                     pulsarConfig.getProperty(cluster + ".brokersTask.enable", "false"));

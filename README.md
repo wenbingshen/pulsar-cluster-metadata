@@ -11,7 +11,8 @@
 - cluster=pulsar_test_cluster_1,pulsar_test_cluster_2
 - pulsar_test_cluster_1.serviceUrl=http://localhost:8080/
 - pulsar_test_cluster_1.authPlugin=org.apache.pulsar.client.impl.auth.AuthenticationToken
-- pulsar_test_cluster_1.authParams={"token":"*********"} 
+- pulsar_test_cluster_1.authParams={"token":"*********"}
+- pulsar_test_cluster_1.bookiesTask.enable=true
 - pulsar_test_cluster_1.brokersTask.enable=true
 - pulsar_test_cluster_1.tenantsTask.enable=true
 - pulsar_test_cluster_1.namespacesTask.enable=true

@@ -1,6 +1,7 @@
 package com.shen.wen.bing.server;
 
 import com.shen.wen.bing.common.Metadata;
+import com.shen.wen.bing.task.BookiesTask;
 import com.shen.wen.bing.task.BrokersTask;
 import com.shen.wen.bing.task.NamespacesTask;
 import com.shen.wen.bing.task.PulsarTask;
@@ -55,7 +56,10 @@ public class PulsarMetadataMain {
 
         pulsarTasks.forEach(pulsarTask -> {
             long checkInterval = Long.parseLong(tasksCheckInterval);
-            if (pulsarTask instanceof BrokersTask) {
+            if (pulsarTask instanceof BookiesTask) {
+                checkInterval = Long.parseLong(
+                        pulsarConfig.getProperty("bookies.tasks.check.interval.ms", tasksCheckInterval));
+            } else if (pulsarTask instanceof BrokersTask) {
                 checkInterval = Long.parseLong(
                         pulsarConfig.getProperty("brokers.tasks.check.interval.ms", tasksCheckInterval));
             } else if (pulsarTask instanceof TenantsTask) {
