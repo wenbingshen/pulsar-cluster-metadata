@@ -17,4 +17,5 @@
 - pulsar_test_cluster_1.tenantsTask.enable=true
 - pulsar_test_cluster_1.namespacesTask.enable=true
 - pulsar_test_cluster_1.topicsTask.enable=true
+- pulsar_test_cluster_1.topicStatsTask.enable=true
 - pulsar_test_cluster_2.xxx=yyy

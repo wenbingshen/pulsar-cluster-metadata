@@ -4,6 +4,7 @@ import com.shen.wen.bing.common.PulsarAdminConfig;
 import com.shen.wen.bing.task.BookiesTask;
 import com.shen.wen.bing.task.BrokersTask;
 import com.shen.wen.bing.task.PulsarTask;
+import com.shen.wen.bing.task.details.TopicStatsTask;
 import com.shen.wen.bing.utils.PulsarAdminBuilderUtil;
 import com.shen.wen.bing.common.Metadata;
 import com.shen.wen.bing.task.NamespacesTask;
@@ -62,6 +63,12 @@ public class PulsarTaskBuilder {
                     pulsarConfig.getProperty(cluster + ".topicsTask.enable", "false"));
             if (tenantsEnable && namespacesEnable && topicsEnable) {
                 taskLists.add(new TopicsTask(admin, cluster, metadata));
+            }
+
+            boolean topicStatsEnable = Boolean.parseBoolean(
+                    pulsarConfig.getProperty(cluster + ".topicStatsTask.enable", "false"));
+            if (topicsEnable && topicStatsEnable) {
+                taskLists.add(new TopicStatsTask(admin, cluster, metadata));
             }
         }
 

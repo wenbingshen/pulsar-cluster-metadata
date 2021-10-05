@@ -7,6 +7,7 @@ import com.shen.wen.bing.task.NamespacesTask;
 import com.shen.wen.bing.task.PulsarTask;
 import com.shen.wen.bing.task.TenantsTask;
 import com.shen.wen.bing.task.TopicsTask;
+import com.shen.wen.bing.task.details.TopicStatsTask;
 import com.shen.wen.bing.utils.PulsarConfigUtil;
 import java.util.List;
 import java.util.Properties;
@@ -18,13 +19,14 @@ import org.apache.pulsar.client.api.PulsarClientException;
 
 @Slf4j
 public class PulsarMetadataMain {
+    private static Properties pulsarConfig;
 
     public static void main(String[] args) throws PulsarClientException, InterruptedException {
         if (args.length < 1) {
             log.error("Please put a pulsar client config file, current input args is empty");
             System.exit(1);
         }
-        Properties pulsarConfig = PulsarConfigUtil.loadConfig(args[0]);
+        pulsarConfig = PulsarConfigUtil.loadConfig(args[0]);
         log.info("load config");
 
         // 校验Config，如cluster name重复
@@ -55,22 +57,7 @@ public class PulsarMetadataMain {
         String tasksCheckInterval = pulsarConfig.getProperty("pulsar.tasks.check.interval.ms", "15000");
 
         pulsarTasks.forEach(pulsarTask -> {
-            long checkInterval = Long.parseLong(tasksCheckInterval);
-            if (pulsarTask instanceof BookiesTask) {
-                checkInterval = Long.parseLong(
-                        pulsarConfig.getProperty("bookies.tasks.check.interval.ms", tasksCheckInterval));
-            } else if (pulsarTask instanceof BrokersTask) {
-                checkInterval = Long.parseLong(
-                        pulsarConfig.getProperty("brokers.tasks.check.interval.ms", tasksCheckInterval));
-            } else if (pulsarTask instanceof TenantsTask) {
-                checkInterval = Long.parseLong(
-                        pulsarConfig.getProperty("tenants.tasks.check.interval.ms", tasksCheckInterval));
-            } else if (pulsarTask instanceof NamespacesTask) {
-                checkInterval = Long.parseLong(
-                        pulsarConfig.getProperty("namespaces.tasks.check.interval.ms", tasksCheckInterval));
-            } else if (pulsarTask instanceof TopicsTask) {
-                checkInterval = Long.parseLong(pulsarConfig.getProperty("topics.tasks.check.interval.ms", tasksCheckInterval));
-            }
+            long checkInterval = checkInterval(pulsarTask, tasksCheckInterval);
             pulsarTasksExecutor.scheduleAtFixedRate(
                     pulsarTask,
                     checkInterval,
@@ -80,5 +67,28 @@ public class PulsarMetadataMain {
         log.info("all pulsar tasks running now");
 
         Thread.currentThread().join();
+    }
+
+    private static long checkInterval(PulsarTask pulsarTask, String tasksCheckInterval) {
+        long checkInterval = Long.parseLong(tasksCheckInterval);
+        if (pulsarTask instanceof BookiesTask) {
+            checkInterval = Long.parseLong(
+                    pulsarConfig.getProperty("bookies.tasks.check.interval.ms", tasksCheckInterval));
+        } else if (pulsarTask instanceof BrokersTask) {
+            checkInterval = Long.parseLong(
+                    pulsarConfig.getProperty("brokers.tasks.check.interval.ms", tasksCheckInterval));
+        } else if (pulsarTask instanceof TenantsTask) {
+            checkInterval = Long.parseLong(
+                    pulsarConfig.getProperty("tenants.tasks.check.interval.ms", tasksCheckInterval));
+        } else if (pulsarTask instanceof NamespacesTask) {
+            checkInterval = Long.parseLong(
+                    pulsarConfig.getProperty("namespaces.tasks.check.interval.ms", tasksCheckInterval));
+        } else if (pulsarTask instanceof TopicsTask) {
+            checkInterval = Long.parseLong(pulsarConfig.getProperty("topics.tasks.check.interval.ms", tasksCheckInterval));
+        } else if (pulsarTask instanceof TopicStatsTask) {
+            checkInterval = Long.parseLong(pulsarConfig.getProperty("topicStats.tasks.check.interval.ms", tasksCheckInterval));
+        }
+
+        return checkInterval;
     }
 }
