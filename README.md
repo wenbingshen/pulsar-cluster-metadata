@@ -5,7 +5,6 @@ Collect metadata of multiple pulsar clusters
 
 mvn clean install
 
-cd target/pulsar-tools-1.0-SNAPSHOT.jar
 
 # execute
 java -jar pulsar-tools-1.0-SNAPSHOT.jar configFilePath
