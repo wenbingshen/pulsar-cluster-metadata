@@ -23,18 +23,16 @@ public class TopicsTask implements PulsarTask {
 
     @Override
     public void safeRun() {
-        while (true) {
-            List<String> allTopics = new ArrayList<>();
-            metadata.getNamespaces(cluster).forEach(namespace -> {
-                try {
-                    List<String> topics = admin.topics().getList(namespace);
-                    allTopics.addAll(topics);
-                    log.info("Metadata cluster {}, namespace {}, topics {}", cluster, namespace, topics);
-                } catch (PulsarAdminException e) {
-                    log.error("Get topic list for cluster {} namespace {} failed", cluster, namespace, e);
-                }
-            });
-            metadata.setTopics(cluster, allTopics);
-        }
+        List<String> allTopics = new ArrayList<>();
+        metadata.getNamespaces(cluster).forEach(namespace -> {
+            try {
+                List<String> topics = admin.topics().getList(namespace);
+                allTopics.addAll(topics);
+                log.info("Metadata cluster {}, namespace {}, topics {}", cluster, namespace, topics);
+            } catch (PulsarAdminException e) {
+                log.error("Get topic list for cluster {} namespace {} failed", cluster, namespace, e);
+            }
+        });
+        metadata.setTopics(cluster, allTopics);
     }
 }

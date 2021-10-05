@@ -5,20 +5,30 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import lombok.ToString;
+import org.apache.pulsar.common.policies.data.RawBookieInfo;
 
 @ToString
 public class Metadata {
 
+    private final Map<String, List<RawBookieInfo>> bookies;
     private final Map<String, List<String>> brokers;
     private final Map<String, List<String>> tenants;
     private final Map<String, List<String>> namespaces;
     private final Map<String, List<String>> topics;
 
     public Metadata() {
+        this.bookies = Maps.newConcurrentMap();
         this.brokers = Maps.newConcurrentMap();
         this.tenants = Maps.newConcurrentMap();
         this.namespaces = Maps.newConcurrentMap();
         this.topics = Maps.newConcurrentMap();
+    }
+
+    public List<RawBookieInfo> getBookies(String cluster) {
+        if (bookies.containsKey(cluster)) {
+            return bookies.get(cluster);
+        }
+        return Collections.emptyList();
     }
 
     public List<String> getBrokers(String cluster) {
@@ -49,6 +59,10 @@ public class Metadata {
         return Collections.emptyList();
     }
 
+    public void setBookies(String cluster, List<RawBookieInfo> newBookiesInfo) {
+        bookies.put(cluster, newBookiesInfo);
+    }
+
     public void setBrokers(String cluster, List<String> newBrokers) {
         brokers.put(cluster, newBrokers);
     }
@@ -66,6 +80,7 @@ public class Metadata {
     }
 
     public void clear() {
+        bookies.clear();
         brokers.clear();
         tenants.clear();
         namespaces.clear();

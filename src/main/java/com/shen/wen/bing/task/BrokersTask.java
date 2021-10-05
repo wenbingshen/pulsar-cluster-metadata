@@ -21,14 +21,12 @@ public class BrokersTask implements PulsarTask{
     }
     @Override
     public void safeRun() {
-        while (true) {
-            try {
-                List<String> activeBrokers = admin.brokers().getActiveBrokers(cluster);
-                metadata.setBrokers(cluster, activeBrokers);
-                log.info("Metadata cluster {}, brokers {}", cluster, metadata.getBrokers(cluster));
-            } catch (PulsarAdminException e) {
-                log.error("Get active brokers for cluster {} failed", cluster, e);
-            }
+        try {
+            List<String> activeBrokers = admin.brokers().getActiveBrokers(cluster);
+            metadata.setBrokers(cluster, activeBrokers);
+            log.info("Metadata cluster {}, brokers {}", cluster, metadata.getBrokers(cluster));
+        } catch (PulsarAdminException e) {
+            log.error("Get active brokers for cluster {} failed", cluster, e);
         }
     }
 }

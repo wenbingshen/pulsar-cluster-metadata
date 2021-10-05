@@ -24,18 +24,16 @@ public class NamespacesTask implements PulsarTask {
 
     @Override
     public void safeRun() {
-        while (true) {
-            List<String> allNamespaces = new ArrayList<>();
-            metadata.getTenants(cluster).forEach(tenant -> {
-                try {
-                    List<String> namespaces = admin.namespaces().getNamespaces(tenant);
-                    allNamespaces.addAll(namespaces);
-                    log.info("Metadata cluster {}, tenant {}, namespaces {}", cluster, tenant, namespaces);
-                } catch (PulsarAdminException e) {
-                    log.error("Get namespaces for cluster {} tenant {} failed", cluster, tenant, e);
-                }
-            });
-            metadata.setNamespaces(cluster, allNamespaces);
-        }
+        List<String> allNamespaces = new ArrayList<>();
+        metadata.getTenants(cluster).forEach(tenant -> {
+            try {
+                List<String> namespaces = admin.namespaces().getNamespaces(tenant);
+                allNamespaces.addAll(namespaces);
+                log.info("Metadata cluster {}, tenant {}, namespaces {}", cluster, tenant, namespaces);
+            } catch (PulsarAdminException e) {
+                log.error("Get namespaces for cluster {} tenant {} failed", cluster, tenant, e);
+            }
+        });
+        metadata.setNamespaces(cluster, allNamespaces);
     }
 }
