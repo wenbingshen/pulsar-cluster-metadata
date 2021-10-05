@@ -1,24 +1,19 @@
-# pulsar-cluster-metadata
-Collect metadata of multiple pulsar clusters
+# Pulsar-Cluster-Metadata (PCM)
+- Collect metadata of multiple pulsar clusters
 
-# mvn build
+# Build
+- mvn clean install
 
-mvn clean install
+# Execute
+- java -jar pulsar-tools-1.0-SNAPSHOT.jar configFilePath
 
-
-# execute
-java -jar pulsar-tools-1.0-SNAPSHOT.jar configFilePath
-
-# example config file
-cluster=pulsar_test_cluster_1,pulsar_test_cluster_2
-
-pulsar_test_cluster_1.serviceUrl=http://localhost:8080/
-pulsar_test_cluster_1.authPlugin=org.apache.pulsar.client.impl.auth.AuthenticationToken
-pulsar_test_cluster_1.authParams={"token":"*********"} 
-
-pulsar_test_cluster_1.brokersTask.enable=true
-pulsar_test_cluster_1.tenantsTask.enable=true
-pulsar_test_cluster_1.namespacesTask.enable=true
-pulsar_test_cluster_1.topicsTask.enable=true
-
-pulsar_test_cluster_2.xxx=yyy
+# Example Config File
+- cluster=pulsar_test_cluster_1,pulsar_test_cluster_2
+- pulsar_test_cluster_1.serviceUrl=http://localhost:8080/
+- pulsar_test_cluster_1.authPlugin=org.apache.pulsar.client.impl.auth.AuthenticationToken
+- pulsar_test_cluster_1.authParams={"token":"*********"} 
+- pulsar_test_cluster_1.brokersTask.enable=true
+- pulsar_test_cluster_1.tenantsTask.enable=true
+- pulsar_test_cluster_1.namespacesTask.enable=true
+- pulsar_test_cluster_1.topicsTask.enable=true
+- pulsar_test_cluster_2.xxx=yyy
