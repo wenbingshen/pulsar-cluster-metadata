@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.ToString;
 import org.apache.pulsar.common.policies.data.RawBookieInfo;
+import org.apache.pulsar.common.policies.data.TopicStats;
 
 @ToString
 public class Metadata {
@@ -15,6 +16,7 @@ public class Metadata {
     private final Map<String, List<String>> tenants;
     private final Map<String, List<String>> namespaces;
     private final Map<String, List<String>> topics;
+    private final Map<String, List<TopicStats>> topicStats;
 
     public Metadata() {
         this.bookies = Maps.newConcurrentMap();
@@ -22,6 +24,7 @@ public class Metadata {
         this.tenants = Maps.newConcurrentMap();
         this.namespaces = Maps.newConcurrentMap();
         this.topics = Maps.newConcurrentMap();
+        this.topicStats = Maps.newConcurrentMap();
     }
 
     public List<RawBookieInfo> getBookies(String cluster) {
@@ -59,6 +62,13 @@ public class Metadata {
         return Collections.emptyList();
     }
 
+    public List<TopicStats> getTopicStats(String cluster) {
+        if (topicStats.containsKey(cluster)) {
+            return topicStats.get(cluster);
+        }
+        return Collections.emptyList();
+    }
+
     public void setBookies(String cluster, List<RawBookieInfo> newBookiesInfo) {
         bookies.put(cluster, newBookiesInfo);
     }
@@ -79,13 +89,16 @@ public class Metadata {
         topics.put(cluster, newTopics);
     }
 
+    public void setTopicStats(String cluster, List<TopicStats> topicStatsList) {
+        topicStats.put(cluster, topicStatsList);
+    }
+
     public void clear() {
         bookies.clear();
         brokers.clear();
         tenants.clear();
         namespaces.clear();
         topics.clear();
+        topicStats.clear();
     }
-
-
 }
