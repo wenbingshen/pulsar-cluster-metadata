@@ -27,11 +27,14 @@ public class PulsarTaskBuilder {
         ArrayList<PulsarTask> taskLists = new ArrayList<>();
 
         for (String cluster : clusters) {
-            Properties pulsarAdminConfig = PulsarAdminConfig.builder()
-                    .serviceUrl(pulsarConfig.getProperty(cluster + ".serviceUrl"))
-                    .authPlugin(pulsarConfig.getProperty(cluster + ".authPlugin"))
-                    .authParams(pulsarConfig.getProperty(cluster + ".authParams"))
-                    .build().toProperties();
+            PulsarAdminConfig.PulsarAdminConfigBuilder pulsarAdminConfigBuilder = PulsarAdminConfig.builder()
+                    .serviceUrl(pulsarConfig.getProperty(cluster + ".serviceUrl"));
+            if (pulsarConfig.containsKey(cluster + ".authPlugin")) {
+                pulsarAdminConfigBuilder
+                        .authPlugin(pulsarConfig.getProperty(cluster + ".authPlugin"))
+                        .authParams(pulsarConfig.getProperty(cluster + ".authParams"));
+            }
+            Properties pulsarAdminConfig = pulsarAdminConfigBuilder.build().toProperties();
 
             PulsarAdmin admin = PulsarAdminBuilderUtil.build(pulsarAdminConfig);
 
