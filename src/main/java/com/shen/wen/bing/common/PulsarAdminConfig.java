@@ -6,9 +6,10 @@ import java.util.Properties;
 
 @Builder
 public class PulsarAdminConfig {
-    private String serviceUrl;
-    private String authPlugin;
-    private String authParams;
+    private final String serviceUrl;
+    private final String authPlugin;
+    private final String authParams;
+    private final String cluster;
 
     public Properties toProperties() {
         final Properties properties = new Properties();
@@ -22,6 +23,10 @@ public class PulsarAdminConfig {
 
         if (authParams != null) {
             properties.put("authParams", authParams);
+        }
+
+        if (cluster != null) {
+            properties.put("cluster", cluster);
         }
 
         return properties;

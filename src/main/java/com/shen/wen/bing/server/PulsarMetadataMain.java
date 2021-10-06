@@ -29,13 +29,17 @@ public class PulsarMetadataMain {
         pulsarConfig = PulsarConfigUtil.loadConfig(args[0]);
         log.info("load config");
 
-        // 校验Config，如cluster name重复
+        // TODO
+        // validate Config，e.g. duplicate cluster name
 
         Metadata metadata = new Metadata();
         log.info("init metadata");
 
         List<PulsarTask> pulsarTasks = PulsarTaskBuilder.buildPulsarTask(pulsarConfig, metadata);
         log.info("build pulsar tasks");
+
+        // TODO
+        // init pulsar output
 
         int numTaskThreads = Math.max(1, Integer.parseInt(pulsarConfig.getProperty("num.task.threads",
                 String.valueOf(Runtime.getRuntime().availableProcessors() / 2))));
