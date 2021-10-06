@@ -28,7 +28,8 @@ public class PulsarTaskBuilder {
 
         for (String cluster : clusters) {
             PulsarAdminConfig.PulsarAdminConfigBuilder pulsarAdminConfigBuilder = PulsarAdminConfig.builder()
-                    .serviceUrl(pulsarConfig.getProperty(cluster + ".serviceUrl"));
+                    .serviceUrl(pulsarConfig.getProperty(cluster + ".serviceUrl"))
+                    .cluster(cluster);
             if (pulsarConfig.containsKey(cluster + ".authPlugin")) {
                 pulsarAdminConfigBuilder
                         .authPlugin(pulsarConfig.getProperty(cluster + ".authPlugin"))
